@@ -18,6 +18,9 @@ function addGroceryListItem(container, item) {
     // update() here so we don't overwrite other items in the index
     var containerRef = ref.child('containers/' + container);
     containerRef.child('objects').update(containerIndexValue);
+
+    // clear new item input box
+    $('#' + container + 'NewListItem').val('');
   }
 }
 
@@ -41,44 +44,86 @@ function removeGroceryListItem(name) {
   });
 }
 
-function displayGroceryList(element, name) {
-  element.show();
+// this function will display a grocery list and call displayGroceryListItems to display their contents.
+// In order to show multiple grocery lists, call this function once for each list
+// name - the firebase generated name of the grocery list container
+// active - whether the list will be displayed on the screen. Only one list should be active
+function displayGroceryList(name, active) {
+
   var ref = InventoryManager['imRef'].child('containers/' + name);
   ref.once('value', function(v) {
     if (v.val() === null) {
-      element.html('<h2>The container was not found</h2>');
+      flash('danger', 'Grocery List ' + name + ' was not found.');
     }
     else {
+      var activeClass = ''
+      if(active == true) {
+	activeClass = 'active'
+      }
+      // add Grocery List tab to markup
+      var tabItemMarkup = '<li class="'+ activeClass + '"><a data-toggle="#' + v.name() +'" href="#' + v.name() +'">' + v.val()['name'] + '</a></li>';
+      $('#listTabs').append(tabItemMarkup);
 
-      /*element.prepend('<h2>' + v.val()['name'] + '</h2>');
-      if(v.val()['description'] != null) {
-        element.append('<h4>' + v.val()['description'] + '</h4>');
-      }*/
-      //element.append("<table id='list_table'><thead><tr><th>&nbsp;</th><th>Item</th></tr></thead></table>");
-      // call function to setup events for dynamically updating the list
-      displayGroceryListItems(ref, $('#list_table'));
-
+      // setup click handler so we actually change tabs on click
       $('#listTabs a').click(function (e) {
         e.preventDefault()
         $(this).tab('show')
       })
+
+      // function to handle displaying the items
+      displayGroceryListItems(ref, active);
     }
   });
 }
 
-function displayGroceryListItems(list, element) {
-  var groceryItems = list.child('objects/');
+// this function will display the items in a grocery list container
+// containerFbRef - firebase ref to the grocery list container
+// active - whether the list will be displayed on the screen. Only one list should be active
+function displayGroceryListItems(containerFbRef, active) {
+  // the containers objects child node contains the references to the actual grocery items
+  var groceryItems = containerFbRef.child('objects/');
 
-  groceryItems.on('child_added', function(snap) {
-    InventoryManager['imRef'].child('objects/' + snap.name()).once('value', function(dataSnapshot) {
-      console.log(dataSnapshot.name() + " " + dataSnapshot.val()['checked'] +" "+ dataSnapshot.val()['data']);
-      //element.append("<tr id='" + dataSnapshot.name() + "'><td>" + dataSnapshot.val()['checked'] +"</td><td>"+ dataSnapshot.val()['data'] + '</td></tr>');
+  var activeClasstext = ''
+  if(active == true) {
+    activeClasstext = 'active in'
+  }
+  var tabContentMarkup = '<div class="tab-pane panel panel-default panel-body fade '+activeClasstext+'" id= "' + containerFbRef.name() +'"><table class="table table-condensed" id="'+containerFbRef.name()+'Content"><tr><td><input id = "'+containerFbRef.name()+'NewListItem" type="text" class="form-control" placeholder="New Item" required></td><td><button onclick="addGroceryListItem(\''+containerFbRef.name()+'\', $(\'#'+containerFbRef.name()+'NewListItem\').val())" class="btn btn-primary" >Add </button></td><td>&nbsp;</td></tr></table></div>';
+  $('#tabContents').append(tabContentMarkup);
+
+  // if a grocery item is added, update the DOM. Note: on first run, this will run once for each grocery list item
+  groceryItems.on('child_added', function(dataSnapshot) {
+    var groceryItem = InventoryManager['imRef'].child('objects/' + dataSnapshot.name());
+    // for eahc grocery item, build out the DOM
+    groceryItem.once('value', function(dataSnapshot) {
+      var tabContentDataMarkup = '<tr id="'+ dataSnapshot.name() +'row">' + groceryListMarkupHelper(dataSnapshot) + '</tr>';
+      $('#' + containerFbRef.name() + 'Content').prepend(tabContentDataMarkup);
+    });
+
+    // if a grocery item changes, update the DOM
+    groceryItem.on('child_changed', function(childSnapshot, prevChildName) {
+      groceryItem.once('value', function(dataSnapshot) {
+	// replace the contents of the <tr> with the updated data
+	$("#" + groceryItem.name()+'row').html(groceryListMarkupHelper(dataSnapshot));
+      });
     });
   });
 
-  groceryItems.on('child_removed', function(snap) {
+  // if grocery items are removed, update the DOM
+  groceryItems.on('child_removed', function(dataSnapshot) {
     // remove from DOM
-    $('#' + snap.name()).remove();
+    $('#' + dataSnapshot.name() + 'row').remove();
   });
 
+}
+
+// helper function for generating markup
+function groceryListMarkupHelper(data) {
+
+  if(data.val()['checked'] == true) {
+    var itemButtonMarkup = '<td><s><b>'+ data.val()['data'] +'</b></s></td><td><button onclick = "toggleGroceryListItemStatus(\''+data.name()+'\')" class="btn btn-primary"> Uncheck </button></td><td><button onclick= "removeGroceryListItem(\''+data.name()+'\')" class="btn btn-primary"> Remove </button></td>';
+  }
+  else {
+    var itemButtonMarkup = '<td><b>'+ data.val()['data'] +'</b></td><td><button onclick = "toggleGroceryListItemStatus(\''+data.name()+'\')" class="btn btn-primary"> Check </button></td><td><button onclick= "removeGroceryListItem(\''+data.name()+'\')" class="btn btn-primary"> Remove </button></td>';
+  }
+  return itemButtonMarkup;
 }

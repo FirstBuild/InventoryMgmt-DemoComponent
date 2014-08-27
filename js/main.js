@@ -50,8 +50,10 @@ function initAuth(ref) {
       $("#profile-link").html('<a href="#">' + user.email + '</a>');
       $("ul.masthead-nav").append('<li id="logout"><a href="#">Logout</a></ul>');
 
+      $('#lists').show();
+
       // todo: for now, hard code grocery list until that functionality is complete
-      displayGroceryList($('#lists'), '-JUe8qcgJOZsHYZCogge');
+      displayGroceryList('-JUe8qcgJOZsHYZCogge', true);
     }
     else {
       // user logged out
@@ -74,7 +76,7 @@ function flash(sev, msg) {
   html += msg + '</div>';
 
   // now flash the message
-  $('#container').prepend(html);
+  $('#flash').append(html);
 }
 
 // signin form submit handler
