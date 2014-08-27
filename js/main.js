@@ -41,9 +41,13 @@ function initAuth(ref) {
               flash('danger', 'Failed to create root container for new user.');
               return false;
             } else {
+              InventoryManager['rootContainer'] = contRef.name();
               userRef.set({displayName: user.email, email: user.email, provider: user.provider, provider_id: user.id, rootContainer: contRef.name()});
             }
           });
+        } else {
+          // store root container name
+          InventoryManager['rootContainer'] = snap.val()['rootContainer'];
         }
       });
       $("#signin-form").hide();
