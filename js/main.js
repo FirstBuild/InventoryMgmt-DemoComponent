@@ -28,13 +28,22 @@ function initAuth(ref) {
     else if(user) {
       // user logged in
       InventoryManager['uid'] = user.uid;
-      userRef = ref.child('users').child(user.uid);
+      var userRef = ref.child('users').child(user.uid);
       userRef.once('value', function(snap) {
         if (snap.val() === null) {
           // create a user profile if it doesn't already exist
           // we can't do this on user creation because you have to be authenticated
           // in order to write to the /users node
-          userRef.set({displayName: user.email, provider: user.provider, provider_id: user.id});
+          var rootCont = { name: user.uid+'_root', description: 'root container', parent: false, owners: {} };
+          rootCont['owners'][user.uid] = true;
+          var contRef = ref.child('containers').push(rootCont, function(err) {
+            if (err) {
+              flash('danger', 'Failed to create root container for new user.');
+              return false;
+            } else {
+              userRef.set({displayName: user.email, email: user.email, provider: user.provider, provider_id: user.id, rootContainer: contRef.name()});
+            }
+          });
         }
       });
       $("#signin-form").hide();
