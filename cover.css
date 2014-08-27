@@ -198,3 +198,11 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.tab-pane {
+  background-color: #141414;
+}
+
+.nav-tabs > li{
+  background-color: #141414;
+}

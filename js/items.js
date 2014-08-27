@@ -49,13 +49,19 @@ function displayGroceryList(element, name) {
       element.html('<h2>The container was not found</h2>');
     }
     else {
-      element.prepend('<h2>' + v.val()['name'] + '</h2>');
+
+      /*element.prepend('<h2>' + v.val()['name'] + '</h2>');
       if(v.val()['description'] != null) {
         element.append('<h4>' + v.val()['description'] + '</h4>');
-      }
-      element.append("<table id='list_table'><thead><tr><th>&nbsp;</th><th>Item</th></tr></thead></table>");
+      }*/
+      //element.append("<table id='list_table'><thead><tr><th>&nbsp;</th><th>Item</th></tr></thead></table>");
       // call function to setup events for dynamically updating the list
       displayGroceryListItems(ref, $('#list_table'));
+
+      $('#listTabs a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+      })
     }
   });
 }
@@ -65,7 +71,8 @@ function displayGroceryListItems(list, element) {
 
   groceryItems.on('child_added', function(snap) {
     InventoryManager['imRef'].child('objects/' + snap.name()).once('value', function(dataSnapshot) {
-      element.append("<tr id='" + dataSnapshot.name() + "'><td>" + dataSnapshot.val()['checked'] +"</td><td>"+ dataSnapshot.val()['data'] + '</td></tr>');
+      console.log(dataSnapshot.name() + " " + dataSnapshot.val()['checked'] +" "+ dataSnapshot.val()['data']);
+      //element.append("<tr id='" + dataSnapshot.name() + "'><td>" + dataSnapshot.val()['checked'] +"</td><td>"+ dataSnapshot.val()['data'] + '</td></tr>');
     });
   });
 

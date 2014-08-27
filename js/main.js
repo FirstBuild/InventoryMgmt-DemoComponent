@@ -40,12 +40,16 @@ function initAuth(ref) {
       $("#signin-form").hide();
       $("#profile-link").html('<a href="#">' + user.email + '</a>');
       $("ul.masthead-nav").append('<li id="logout"><a href="#">Logout</a></ul>');
+
+      // todo: for now, hard code grocery list until that functionality is complete
+      displayGroceryList($('#lists'), '-JUe8qcgJOZsHYZCogge');
     }
     else {
       // user logged out
       $('li').remove('#logout');
       $("#signin-form").show();
       $("#profile-link").html('<a href="#">Not Logged In</a>');
+      $('#lists').hide();
     }
   });
 }

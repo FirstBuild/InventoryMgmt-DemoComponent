@@ -16,6 +16,7 @@
     <!-- Custom styles for this template -->
     <link href="cover.css" rel="stylesheet">
 
+
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="/vendor/bootstrap/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="/vendor/bootstrap/js/ie-emulation-modes-warning.js"></script>
@@ -64,6 +65,58 @@
 
 					<!-- divs for our list of lists, and our individual grocery list start hidden -->
 					<div class="inner cover" id="lists" style="display: none">
+            <div class="row">
+              <div class="col-lg-2">
+                <ul class="nav nav-stacked">
+                  <li>
+                    <button class="btn btn-primary dropdown-toggle btn-block" data-toggle="dropdown"> Add List </button>
+                  </li>
+                  <li>
+                    <button class="btn btn-primary dropdown-toggle btn-block" data-toggle="dropdown"> Remove List </button>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-lg-10 container">
+                <ul class="nav nav-tabs" id="listTabs">
+                  <li class="active"><a data-toggle="#list1" href="#list1">List 1</a></li>
+                  <li class=""><a data-toggle="#list2" href="#list2">List 2</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane panel panel-default panel-body fade active in" id= "list1">
+                    <table class="table table-condensed">
+                      <tbody>
+                        <tr>
+                          <td><b>food example 1</b></td>
+                          <td><button class="btn btn-primary"> Complete </button></td>
+                          <td><button class="btn btn-primary"> Remove </button></td>
+                        </tr>
+                        <tr>
+                          <td><s>food example 2</s></td>
+                          <td><button class="btn btn-primary"> Uncheck </button></td>
+                          <td><button class="btn btn-primary"> Remove </button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="tab-pane panel panel-default panel-body fade" id= "list2">
+                    <table class="table table-condensed">
+                      <tbody>
+                        <tr>
+                          <td><b>food example 3</b></td>
+                          <td><button class="btn btn-primary"> Complete </button></td>
+                          <td><button class="btn btn-primary"> Remove </button></td>
+                        </tr>
+                        <tr>
+                          <td><s>food example 4</s></td>
+                          <td><button class="btn btn-primary"> Uncheck </button></td>
+                          <td><button class="btn btn-primary"> Remove </button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
 					</div>
 
 					<div class="inner cover" id="mylist" style="display: none">
