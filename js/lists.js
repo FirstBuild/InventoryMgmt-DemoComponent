@@ -22,6 +22,16 @@ function newList(data) {
   return newChild;
 }
 
+function deleteList(name) {
+  var ref = InventoryManager['imRef'].child('containers').child(name);
+  ref.once('value', function(v) {
+    var parentName = v.val()['parent'];
+    var parentRef = InventoryManager['imRef'].child('containers').child(parentName).child('children').child(v.name());
+    parentRef.remove();
+    ref.remove();
+  });
+}
+
 // recursively descend through the container tree and identify all grocery lists
 // adding them to the context array (InventoryManger['lists']) and adding listeners
 // for their new children or removed children
