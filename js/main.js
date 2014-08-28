@@ -34,9 +34,7 @@ function initAuth(ref) {
           // create a user profile if it doesn't already exist
           // we can't do this on user creation because you have to be authenticated
           // in order to write to the /users node
-          var rootCont = { name: user.uid+'_root', description: 'root container', parent: false, owners: {} };
-          rootCont['owners'][user.uid] = true;
-          var contRef = ref.child('containers').push(rootCont, function(err) {
+          var contRef = ref.child('containers').push({ name: user.uid+'_root', description: 'root container', parent: false, owner: user.uid }, function(err) {
             if (err) {
               flash('danger', 'Failed to create root container for new user.');
               return false;
