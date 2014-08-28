@@ -64,6 +64,9 @@ function initAuth(ref) {
       $('#register-form').hide();
       $("#profile-link").html('<a href="#">Not Logged In</a>');
       $('#lists').hide();
+      $('#listTabs').html('');
+      $('#tabContents').html('');
+
     }
   });
 }
@@ -71,9 +74,6 @@ function initAuth(ref) {
 function toggleRegistration() {
   $('#signin-form').toggle();
   $('#register-form').toggle();
-}
-function registerUser(email, password, confirm) {
-  console.log('in register');
 }
 
 function flash(sev, msg) {
@@ -91,12 +91,12 @@ function flash(sev, msg) {
 }
 
 // signin form submit handler
-$('#signin-form').submit(function(e) {
+$('#signinSubmit').click(function(e) {
   e.preventDefault();
   InventoryManager['auth'].login('password', { email: $('input[type="email"]').val(), password: $('input:password').val() });
 });
 
-$('#register-form').submit(function(e) {
+$('#registerSubmit').click(function(e) {
   e.preventDefault();
 
   var email = $('#registerEmail').val();
@@ -112,6 +112,9 @@ $('#register-form').submit(function(e) {
     if(error === null) {
       // if created successful, sign user in
       InventoryManager['auth'].login('password', { email: email, password: password });
+      $('#registerEmail').val('');
+      $('#registerPassword').val('');
+      $('#registerConfirm').val('');
     }
     else {
       flash('danger', 'The following error occurred' + error)

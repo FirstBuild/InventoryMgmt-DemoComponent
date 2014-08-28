@@ -34,11 +34,8 @@
   <body>
 
     <div class="site-wrapper">
-
       <div class="site-wrapper-inner">
-
         <div id="container" class="cover-container">
-
           <div class="masthead clearfix">
             <div class="inner">
               <h3 class="masthead-brand">FirstBuild</h3>
@@ -49,33 +46,33 @@
             </div>
           </div>
 
-		<div id="flash"></div>
-	  <div id="unauth-section">
-					<div id='signin-form' class="inner cover">
-			      <form class="form-signin" role="form">
-				<h2 class="form-signin-heading">Please sign in</h2>
-				<input type="email" class="form-control" placeholder="Email address" required autofocus>
-				<input type="password" class="form-control" placeholder="Password" required>
-				<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-		<button class="btn btn-lg btn-primary btn-block" onclick="toggleRegistration()">Register</button>
-			      </form>
-	    </div>
-	    <div id = "register-form" style = 'display:none'>
-	      <form class="form-register" role="form">
-		<h2 class="form-register-heading">Register</h2>
-		<input id = "registerEmail" type="email" class="form-control" placeholder="Email address" required autofocus>
-		<input id = "registerPassword" type="password" class="form-control" placeholder="Password" required>
-		<input id = "registerConfirm" type="password" class="form-control" placeholder="Confirm Password" required>
-		<button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
-		<button class="btn btn-lg btn-primary btn-block" onclick="toggleRegistration()">Cancel</button>
-	      </form>
-	    </div>
-            <h1 class="cover-heading">Grocery List Manager</h1>
-            <p class="lead">Welcome to FirstBuild's Grocery List Manager. This is a demo app for working with Firebase on the FirstBuild Inventory Management project.</p>
-            <p class="lead">
-              <a href="https://firstbuild.com/firstbuild/inventory-management-platform/" class="btn btn-lg btn-default">Learn more</a>
-            </p>
-          </div>
+		      <div id="flash"></div>
+        	<div id="unauth-section">
+  					<div id='signin-form' class="inner cover">
+  			      <form class="form-signin" role="form">
+        				<h2 class="form-signin-heading">Please sign in</h2>
+        				<input type="email" class="form-control" placeholder="Email address" required autofocus>
+        				<input type="password" class="form-control" placeholder="Password" required>
+        				<button id = "signinSubmit" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        		    <button class="btn btn-lg btn-primary btn-block" onclick="toggleRegistration()">Register</button>
+  			      </form>
+  	        </div>
+            <div id = "register-form" style = 'display:none'>
+    	        <form class="form-register" role="form">
+            		<h2 class="form-register-heading">Register</h2>
+            		<input id = "registerEmail" type="email" class="form-control" placeholder="Email address" required autofocus>
+            		<input id = "registerPassword" type="password" class="form-control" placeholder="Password" required>
+            		<input id = "registerConfirm" type="password" class="form-control" placeholder="Confirm Password" required>
+            		<button id = "registerSubmit" class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+            		<button class="btn btn-lg btn-primary btn-block" onclick="toggleRegistration()">Cancel</button>
+    	        </form>
+  	       </div>
+           <h1 class="cover-heading">Grocery List Manager</h1>
+           <p class="lead">Welcome to FirstBuild's Grocery List Manager. This is a demo app for working with Firebase on the FirstBuild Inventory Management project.</p>
+           <p class="lead">
+             <a href="https://firstbuild.com/firstbuild/inventory-management-platform/" class="btn btn-lg btn-default">Learn more</a>
+           </p>
+         </div>
 
 					<!-- divs for our list of lists, and our individual grocery list start hidden -->
 					<div class="inner cover" id="lists" style="display: none">
@@ -91,10 +88,8 @@
                 </ul>
               </div>
               <div class="col-lg-10 container">
-                <ul class="nav nav-tabs" id="listTabs">
-                </ul>
-			    <div class="tab-content" id="tabContents">
-                </div>
+                <ul class="nav nav-tabs" id="listTabs"></ul>
+			          <div class="tab-content" id="tabContents"></div>
               </div>
             </div>
 					</div>
@@ -103,23 +98,20 @@
               <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
             </div>
           </div>
-
         </div>
-
       </div>
-
     </div>
 
-	<!-- jQuery and Bootstrap -->
-	<script src="/vendor/jquery-1.11.1.min.js"></script>
-	<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
-	<!-- Firebase -->
-	<script src="https://cdn.firebase.com/js/client/1.0.19/firebase.js"></script>
-	<script src="https://cdn.firebase.com/js/simple-login/1.6.2/firebase-simple-login.js"></script>
-	<!-- Our application -->
-  <script src="/js/lists.js"></script>
-  <script src="/js/items.js"></script>
-	<script src="/js/main.js"></script>
+  	<!-- jQuery and Bootstrap -->
+  	<script src="/vendor/jquery-1.11.1.min.js"></script>
+  	<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+  	<!-- Firebase -->
+  	<script src="https://cdn.firebase.com/js/client/1.0.19/firebase.js"></script>
+  	<script src="https://cdn.firebase.com/js/simple-login/1.6.2/firebase-simple-login.js"></script>
+  	<!-- Our application -->
+    <script src="/js/lists.js"></script>
+    <script src="/js/items.js"></script>
+  	<script src="/js/main.js"></script>
 
   </body>
 </html>
