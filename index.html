@@ -47,7 +47,9 @@
           </div>
 
           <div id="flash"></div>
+          <!-- section displayed when a user is unauthenticated -->
           <div id="unauth-section">
+            <!-- sign in section -->
             <div id='signin-form' class="inner cover">
               <form class="form-signin" role="form">
                 <h2 class="form-signin-heading">Please sign in</h2>
@@ -57,6 +59,8 @@
                 <button class="btn btn-lg btn-primary btn-block" onclick="toggleRegistration()">Register</button>
               </form>
             </div>
+            <!-- /sign in section -->
+            <!-- register new user section -->
             <div id = "register-form" style = 'display:none'>
               <form class="form-register" role="form">
                 <h2 class="form-register-heading">Register</h2>
@@ -67,17 +71,22 @@
                 <button class="btn btn-lg btn-primary btn-block" onclick="toggleRegistration()">Cancel</button>
               </form>
            </div>
+           <!-- /register new user section -->
+           <!-- marketing section -->
            <h1 class="cover-heading">Grocery List Manager</h1>
            <p class="lead">Welcome to FirstBuild's Grocery List Manager. This is a demo app for working with Firebase on the FirstBuild Inventory Management project.</p>
            <p class="lead">
              <a href="https://firstbuild.com/firstbuild/inventory-management-platform/" class="btn btn-lg btn-default">Learn more</a>
            </p>
+           <!-- /marketing section -->
          </div>
+         <!-- /section displayed when a user is unauthenticated -->
 
-          <!-- divs for our list of lists, and our individual grocery list start hidden -->
+          <!-- grocery lists section. display when a user is authenticated -->
           <div class="inner cover" id="lists" style="display: none">
             <div class="row">
               <div class="col-lg-2">
+                <!-- list manipulation section -->
                 <ul class="nav nav-stacked">
                   <li>
                     <button class="btn btn-primary dropdown-toggle btn-block" data-toggle="dropdown"> Add List </button>
@@ -86,18 +95,24 @@
                     <button class="btn btn-primary dropdown-toggle btn-block" data-toggle="dropdown"> Remove List </button>
                   </li>
                 </ul>
+                <!-- /list manipulation section -->
               </div>
+              <!-- grocery list nav section -->
               <div class="col-lg-10 container">
                 <ul class="nav nav-tabs" id="listTabs"></ul>
                 <div class="tab-content" id="tabContents"></div>
+                <!-- /grocery list nav section -->
               </div>
             </div>
           </div>
+          <!-- /grocery lists section. display when a user is authenticated -->
+          <!-- site footer -->
           <div class="mastfoot">
             <div class="inner">
               <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
             </div>
           </div>
+          <!-- /site footer -->
         </div>
       </div>
     </div>
