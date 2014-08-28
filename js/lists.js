@@ -13,18 +13,18 @@ function newList(data) {
     return { success: false, message: 'newList requires an object as input' }
   }
   var newChild = InventoryManager['imRef'].child('containers').push(data);
-  newChild.setPriority(data['owner']); //simplify finding all containers owned by uid
   if (data['parent'] !== false) {
     var parentRef = InventoryManager['imRef'].child('containers/' + data['parent'] + '/children');
     var update = {};
     update[newChild.name()] = true;
     parentRef.update(update);
   }
+  return newChild;
 }
 
 // recursively descend through the container tree and identify all grocery lists
 // adding them to the context array (InventoryManger['lists']) and adding listeners
-// for their new children
+// for their new children or removed children
 function recurseContainers(ref, obj) {
   ref.once('value', function(v) {
     if(v.val()['compType'] && v.val()['compType'] == "grocery") {
@@ -34,19 +34,27 @@ function recurseContainers(ref, obj) {
         description: v.val()['description']
       };
       obj.push(listObj);
-      var ch = ref.child('children');
-      ch.on('child_added', function(snap) {
-        recurseContainers(snap.ref().root().child('containers').child(snap.name()), this);
-      }, obj);
     }
+  }, obj);
+  var ch = ref.child('children');
+  ch.on('child_added', function(snap) {
+    recurseContainers(snap.ref().root().child('containers').child(snap.name()), this);
+  }, obj);
+  ch.on('child_removed', function(snap) {
+    var list = this;
+    $.each(list, function(index, value) {
+      // see if the removed child was one of the grocery lists and remove it
+      // from the InventoryManager['lists'] object if it was
+      if (value['id'] === snap.name()) { list.splice(index,1) }
+    });
   }, obj);
 }
 
 // starting at the logged-in user's rootContainer, enumerate all child
-// containers
+// containers using the recurseContainers helper
 function getUserLists() {
   if (!InventoryManager['uid']) {
-    flash('danger', 'You must be logged in to retrieve your containers.');
+    flash('danger', 'You must be logged in to retrieve Grocery Lists.');
     return false;
   }
   InventoryManager['lists'] = [];
@@ -55,4 +63,5 @@ function getUserLists() {
     var contRef = InventoryManager['imRef'].child('containers').child(v.name());
     recurseContainers(contRef, this);
   }, InventoryManager['lists']);
+  return true;
 }
