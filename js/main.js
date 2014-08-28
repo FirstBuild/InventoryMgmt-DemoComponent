@@ -28,7 +28,7 @@ function initAuth(ref) {
     else if(user) {
       // user logged in
       InventoryManager['uid'] = user.uid;
-      var userRef = ref.child('users').child(user.uid);
+      userRef = ref.child('users').child(user.uid);
       userRef.once('value', function(snap) {
         if (snap.val() === null) {
           // create a user profile if it doesn't already exist
@@ -48,10 +48,9 @@ function initAuth(ref) {
           InventoryManager['rootContainer'] = snap.val()['rootContainer'];
         }
       });
-      $("#signin-form").hide();
+      $("#unauth-section").hide();
       $("#profile-link").html('<a href="#">' + user.email + '</a>');
       $("ul.masthead-nav").append('<li id="logout"><a href="#">Logout</a></ul>');
-
       $('#lists').show();
 
       // todo: for now, hard code grocery list until that functionality is complete
@@ -60,11 +59,21 @@ function initAuth(ref) {
     else {
       // user logged out
       $('li').remove('#logout');
-      $("#signin-form").show();
+      $("#unauth-section").show();
+      $('#signin-form').show();
+      $('#register-form').hide();
       $("#profile-link").html('<a href="#">Not Logged In</a>');
       $('#lists').hide();
     }
   });
+}
+
+function toggleRegistration() {
+  $('#signin-form').toggle();
+  $('#register-form').toggle();
+}
+function registerUser(email, password, confirm) {
+  console.log('in register');
 }
 
 function flash(sev, msg) {
@@ -85,6 +94,29 @@ function flash(sev, msg) {
 $('#signin-form').submit(function(e) {
   e.preventDefault();
   InventoryManager['auth'].login('password', { email: $('input[type="email"]').val(), password: $('input:password').val() });
+});
+
+$('#register-form').submit(function(e) {
+  e.preventDefault();
+
+  var email = $('#registerEmail').val();
+  var password =  $('#registerPassword').val();
+  var confirm = $('#registerConfirm').val();
+
+  if(password != confirm) {
+    flash('danger', 'passwords did not match.');
+    return;
+  }
+  // create the user
+  InventoryManager['auth'].createUser(email, password, function(error,user){
+    if(error === null) {
+      // if created successful, sign user in
+      InventoryManager['auth'].login('password', { email: email, password: password });
+    }
+    else {
+      flash('danger', 'The following error occurred' + error)
+    }
+  });
 });
 
 // logout link handler

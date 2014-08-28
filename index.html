@@ -49,14 +49,27 @@
             </div>
           </div>
 
-	  <div id="flash"></div>
+		<div id="flash"></div>
+	  <div id="unauth-section">
 					<div id='signin-form' class="inner cover">
 			      <form class="form-signin" role="form">
-			        <h2 class="form-signin-heading">Please sign in</h2>
-			        <input type="email" class="form-control" placeholder="Email address" required autofocus>
-			        <input type="password" class="form-control" placeholder="Password" required>
-			        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+				<h2 class="form-signin-heading">Please sign in</h2>
+				<input type="email" class="form-control" placeholder="Email address" required autofocus>
+				<input type="password" class="form-control" placeholder="Password" required>
+				<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+		<button class="btn btn-lg btn-primary btn-block" onclick="toggleRegistration()">Register</button>
 			      </form>
+	    </div>
+	    <div id = "register-form" style = 'display:none'>
+	      <form class="form-register" role="form">
+		<h2 class="form-register-heading">Register</h2>
+		<input id = "registerEmail" type="email" class="form-control" placeholder="Email address" required autofocus>
+		<input id = "registerPassword" type="password" class="form-control" placeholder="Password" required>
+		<input id = "registerConfirm" type="password" class="form-control" placeholder="Confirm Password" required>
+		<button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+		<button class="btn btn-lg btn-primary btn-block" onclick="toggleRegistration()">Cancel</button>
+	      </form>
+	    </div>
             <h1 class="cover-heading">Grocery List Manager</h1>
             <p class="lead">Welcome to FirstBuild's Grocery List Manager. This is a demo app for working with Firebase on the FirstBuild Inventory Management project.</p>
             <p class="lead">
@@ -80,7 +93,7 @@
               <div class="col-lg-10 container">
                 <ul class="nav nav-tabs" id="listTabs">
                 </ul>
-		<div class="tab-content" id="tabContents">
+			    <div class="tab-content" id="tabContents">
                 </div>
               </div>
             </div>
