@@ -93,21 +93,20 @@ function flash(sev, msg) {
 
 $('#addListButton').click(function(e){
   e.preventDefault();
-    console.log(InventoryManager['containers']);
 
-    $('#parentContainerSelectList').html('');
+  $('#parentContainerSelectList').html('');
+  $('#parentContainerSelectList')
+      .append($("<option></option>")
+      .attr("value",InventoryManager['rootContainer'])
+      .text('Default'));
+
+  $.each(InventoryManager['containers']['all'], function(key,value){
+
     $('#parentContainerSelectList')
         .append($("<option></option>")
-        .attr("value",InventoryManager['rootContainer'])
-        .text('Default'));
-
-    $.each(InventoryManager['containers']['all'], function(key,value){
-
-      $('#parentContainerSelectList')
-          .append($("<option></option>")
-          .attr("value",value['id'])
-          .text(value['name']));
-    });
+        .attr("value",value['id'])
+        .text(value['name']));
+  });
 
   $('#newListForm').toggle();
   if($('#addListButton').hasClass('btn-primary')){
@@ -120,6 +119,32 @@ $('#addListButton').click(function(e){
   }
 
 })
+
+$('#removeListButton').click(function(e){
+  e.preventDefault();
+
+  $('#removeContainerSelectList').html('');
+
+  $.each(InventoryManager['containers']['groceryLists'], function(key,value){
+
+    $('#removeContainerSelectList')
+        .append($("<option></option>")
+        .attr("value",value['id'])
+        .text(value['name']));
+  });
+
+  $('#removeListForm').toggle();
+  if($('#removeListButton').hasClass('btn-primary')){
+    $('#removeListButton').addClass('btn-danger');
+    $('#removeListButton').removeClass('btn-primary')
+  }
+  else{
+    $('#removeListButton').addClass('btn-primary');
+    $('#removeListButton').removeClass('btn-danger')
+  }
+
+})
+
 
 $('#newListAdd').click(function(e){
   e.preventDefault();
@@ -134,6 +159,34 @@ $('#newListAdd').click(function(e){
     newList(data);
     $('#listName').val('')
   }
+
+})
+
+$('#removeList').click(function(e){
+  e.preventDefault();
+
+  // remove list from firebase
+  deleteList($('#removeContainerSelectList').val());
+
+  //cleanup DOM
+  $('#'+ $('#removeContainerSelectList').val() +'li').remove();
+  $('#'+ $('#removeContainerSelectList').val() +'tabcontent').remove();
+
+  $.each(InventoryManager['containers']['groceryLists'], function(key,value){
+    if(value['id'] == $('#removeContainerSelectList').val()){
+      InventoryManager['containers']['groceryLists'].splice(key,1)
+    }
+  });
+
+  $('#removeContainerSelectList').html('');
+
+  $.each(InventoryManager['containers']['groceryLists'], function(key,value){
+
+    $('#removeContainerSelectList')
+        .append($("<option></option>")
+        .attr("value",value['id'])
+        .text(value['name']));
+  });
 
 })
 

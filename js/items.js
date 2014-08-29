@@ -58,10 +58,10 @@ function displayGroceryList(name, active) {
     else {
       var activeClass = ''
       if(active == true) {
-	activeClass = 'active'
+        activeClass = 'active'
       }
       // add Grocery List tab to markup
-      var tabItemMarkup = '<li class="'+ activeClass + '"><a data-toggle="#' + v.name() +'" href="#' + v.name() +'">' + v.val()['name'] + '</a></li>';
+      var tabItemMarkup = '<li class="'+ activeClass + '" id="'+v.name()+'li"><a data-toggle="#' + v.name() +'tabcontent" href="#' + v.name() +'tabcontent">' + v.val()['name'] + '</a></li>';
       $('#listTabs').append(tabItemMarkup);
 
       // setup click handler so we actually change tabs on click
@@ -87,7 +87,7 @@ function displayGroceryListItems(containerFbRef, active) {
   if(active == true) {
     activeClasstext = 'active in'
   }
-  var tabContentMarkup = '<div class="tab-pane panel panel-default panel-body fade '+activeClasstext+'" id= "' + containerFbRef.name() +'"><table class="table table-condensed" id="'+containerFbRef.name()+'Content"><tr><td><input id = "'+containerFbRef.name()+'NewListItem" type="text" class="form-control" placeholder="New Item" required></td><td><button onclick="addGroceryListItem(\''+containerFbRef.name()+'\', $(\'#'+containerFbRef.name()+'NewListItem\').val())" class="btn btn-primary" >Add </button></td><td>&nbsp;</td></tr></table></div>';
+  var tabContentMarkup = '<div class="tab-pane panel panel-default panel-body fade '+activeClasstext+'" id= "' + containerFbRef.name() +'tabcontent"><table class="table table-condensed" id="'+containerFbRef.name()+'Content"><tr><td><input id = "'+containerFbRef.name()+'NewListItem" type="text" class="form-control" placeholder="New Item" required></td><td><button onclick="addGroceryListItem(\''+containerFbRef.name()+'\', $(\'#'+containerFbRef.name()+'NewListItem\').val())" class="btn btn-primary" >Add </button></td><td>&nbsp;</td></tr></table></div>';
   $('#tabContents').append(tabContentMarkup);
 
   // if a grocery item is added, update the DOM. Note: on first run, this will run once for each grocery list item

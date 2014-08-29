@@ -88,5 +88,7 @@ function getUserLists() {
     var contRef = InventoryManager['imRef'].child('containers').child(v.name());
     recurseContainers(contRef, this);
   }, InventoryManager['containers']);
+  // if we have no grocery lists, flash message
+  
   return true;
 }

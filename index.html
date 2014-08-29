@@ -92,7 +92,7 @@
                     <button id="addListButton" class="btn btn-primary dropdown-toggle btn-block"> Add List </button>
                   </li>
                   <li>
-                    <button class="btn btn-primary dropdown-toggle btn-block" data-toggle="dropdown"> Remove List </button>
+                    <button id="removeListButton" class="btn btn-primary dropdown-toggle btn-block" data-toggle="dropdown"> Remove List </button>
                   </li>
                 </ul>
                 <!-- /list manipulation section -->
@@ -117,6 +117,19 @@
                     </div>
                     <div class="col-lg-2 container">
                       <button id = "newListAdd" class="btn btn-md btn-success" >Add</button>
+                    </div>
+                  </form>
+                </div>
+                <div id = "removeListForm" style = 'display:none'>
+                  <form role="form">
+                    <div class="col-lg-5 container">
+                      &nbsp;
+                    </div>
+                    <div class="col-lg-5 container">
+                      <select class="form-control" id="removeContainerSelectList"></select>
+                    </div>
+                    <div class="col-lg-2 container">
+                      <button id = "removeList" class="btn btn-md btn-success" >Delete</button>
                     </div>
                   </form>
                 </div>
