@@ -102,8 +102,8 @@ function displayGroceryListItems(containerFbRef, active) {
     // if a grocery item changes, update the DOM
     groceryItem.on('child_changed', function(childSnapshot, prevChildName) {
       groceryItem.once('value', function(dataSnapshot) {
-	// replace the contents of the <tr> with the updated data
-	$("#" + groceryItem.name()+'row').html(groceryListMarkupHelper(dataSnapshot));
+        // replace the contents of the <tr> with the updated data
+        $("#" + groceryItem.name()+'row').html(groceryListMarkupHelper(dataSnapshot));
       });
     });
   });

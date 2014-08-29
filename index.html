@@ -56,7 +56,7 @@
                 <input type="email" class="form-control" placeholder="Email address" required autofocus>
                 <input type="password" class="form-control" placeholder="Password" required>
                 <button id = "signinSubmit" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                <button class="btn btn-lg btn-primary btn-block" onclick="toggleRegistration()">Register</button>
+                <button class="btn btn-lg btn-primary btn-block toggleRegistration">Register</button>
               </form>
             </div>
             <!-- /sign in section -->
@@ -68,7 +68,7 @@
                 <input id = "registerPassword" type="password" class="form-control" placeholder="Password" required>
                 <input id = "registerConfirm" type="password" class="form-control" placeholder="Confirm Password" required>
                 <button id = "registerSubmit" class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
-                <button class="btn btn-lg btn-primary btn-block" onclick="toggleRegistration()">Cancel</button>
+                <button class="btn btn-lg btn-primary btn-block toggleRegistration">Cancel</button>
               </form>
            </div>
            <!-- /register new user section -->
@@ -89,7 +89,7 @@
                 <!-- list manipulation section -->
                 <ul class="nav nav-stacked">
                   <li>
-                    <button class="btn btn-primary dropdown-toggle btn-block" data-toggle="dropdown"> Add List </button>
+                    <button id="addListButton" class="btn btn-primary dropdown-toggle btn-block"> Add List </button>
                   </li>
                   <li>
                     <button class="btn btn-primary dropdown-toggle btn-block" data-toggle="dropdown"> Remove List </button>
@@ -102,6 +102,24 @@
                 <ul class="nav nav-tabs" id="listTabs"></ul>
                 <div class="tab-content" id="tabContents"></div>
                 <!-- /grocery list nav section -->
+              </div>
+            </div>
+            <div class = "row">
+              <div class="col-lg-2"></div>
+              <div class="col-lg-10 container">
+                <div id = "newListForm" style = 'display:none'>
+                  <form role="form">
+                    <div class="col-lg-5 container">
+                      <input id="listName" type="text" class="form-control" placeholder="Name" required autofocus>
+                    </div>
+                    <div class="col-lg-5 container">
+                      <select class="form-control" id="parentContainerSelectList"></select>
+                    </div>
+                    <div class="col-lg-2 container">
+                      <button id = "newListAdd" class="btn btn-md btn-success" >Add</button>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>

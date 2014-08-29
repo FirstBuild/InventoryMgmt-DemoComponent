@@ -8,7 +8,7 @@ var InventoryManager = {
   appURI: "https://flickering-fire-3648.firebaseio.com/"
 };
 
-function initAuth(ref) {
+function initAuth(ref, callback) {
   return new FirebaseSimpleLogin(ref, function(error, user) {
     if (error) {
       switch(error.code) {
@@ -28,6 +28,7 @@ function initAuth(ref) {
     else if(user) {
       // user logged in
       InventoryManager['uid'] = user.uid;
+
       userRef = ref.child('users').child(user.uid);
       userRef.once('value', function(snap) {
         if (snap.val() === null) {
@@ -41,11 +42,13 @@ function initAuth(ref) {
             } else {
               InventoryManager['rootContainer'] = contRef.name();
               userRef.set({displayName: user.email, email: user.email, provider: user.provider, provider_id: user.id, rootContainer: contRef.name()});
+              callback();
             }
           });
         } else {
           // store root container name
           InventoryManager['rootContainer'] = snap.val()['rootContainer'];
+          callback();
         }
       });
       $("#unauth-section").hide();
@@ -53,8 +56,9 @@ function initAuth(ref) {
       $("ul.masthead-nav").append('<li id="logout"><a href="#">Logout</a></ul>');
       $('#lists').show();
 
+
       // todo: for now, hard code grocery list until that functionality is complete
-      displayGroceryList('-JUe8qcgJOZsHYZCogge', true);
+      //displayGroceryList('-JUe8qcgJOZsHYZCogge', true);
     }
     else {
       // user logged out
@@ -71,10 +75,7 @@ function initAuth(ref) {
   });
 }
 
-function toggleRegistration() {
-  $('#signin-form').toggle();
-  $('#register-form').toggle();
-}
+
 
 function flash(sev, msg) {
   // see if we know what severity level this should be
@@ -89,6 +90,59 @@ function flash(sev, msg) {
   // now flash the message
   $('#flash').append(html);
 }
+
+$('#addListButton').click(function(e){
+  e.preventDefault();
+    console.log(InventoryManager['containers']);
+
+    $('#parentContainerSelectList').html('');
+    $('#parentContainerSelectList')
+        .append($("<option></option>")
+        .attr("value",InventoryManager['rootContainer'])
+        .text('Default'));
+
+    $.each(InventoryManager['containers']['all'], function(key,value){
+
+      $('#parentContainerSelectList')
+          .append($("<option></option>")
+          .attr("value",value['id'])
+          .text(value['name']));
+    });
+
+  $('#newListForm').toggle();
+  if($('#addListButton').hasClass('btn-primary')){
+    $('#addListButton').addClass('btn-danger');
+    $('#addListButton').removeClass('btn-primary')
+  }
+  else{
+    $('#addListButton').addClass('btn-primary');
+    $('#addListButton').removeClass('btn-danger')
+  }
+
+})
+
+$('#newListAdd').click(function(e){
+  e.preventDefault();
+
+  if($('#listName').val() != null && $('#listName').val() != ''){
+    var data = {
+      parent: $('#parentContainerSelectList').val(),
+      compType: 'grocery',
+      name: $('#listName').val(),
+      owner: InventoryManager['uid']
+    }
+    newList(data);
+    $('#listName').val('')
+  }
+
+})
+
+// registration/login toggle handler
+$('.toggleRegistration').click(function(e){
+  e.preventDefault();
+  $('#signin-form').toggle();
+  $('#register-form').toggle();
+})
 
 // signin form submit handler
 $('#signinSubmit').click(function(e) {
@@ -131,5 +185,9 @@ $('ul.masthead-nav').on('click', 'li#logout', function() {
 // is loaded
 $(document).ready(function() {
   InventoryManager['imRef'] = new Firebase(InventoryManager['appURI']);
-  InventoryManager['auth'] = initAuth(InventoryManager['imRef']);
+  // when authorized, get users grocery list
+  InventoryManager['auth'] = initAuth(InventoryManager['imRef'], function() {
+    getUserLists();
+  });
+
 });

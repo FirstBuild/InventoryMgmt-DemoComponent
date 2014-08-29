@@ -37,14 +37,26 @@ function deleteList(name) {
 // for their new children or removed children
 function recurseContainers(ref, obj) {
   ref.once('value', function(v) {
+    var listObj = {
+      id: ref.name(),
+      name: v.val()['name'],
+      description: v.val()['description']
+    };
+
     if(v.val()['compType'] && v.val()['compType'] == "grocery") {
-      var listObj = {
-        id: ref.name(),
-        name: v.val()['name'],
-        description: v.val()['description']
-      };
-      obj.push(listObj);
+
+      obj['groceryLists'].push(listObj);
+
+      // if this is our first list, make it the active one
+      if(obj['groceryLists'].length == 1) {
+        displayGroceryList(listObj.id, true);
+      }
+      else
+      {
+        displayGroceryList(listObj.id, false);
+      }
     }
+    obj['all'].push(listObj);
   }, obj);
   var ch = ref.child('children');
   ch.on('child_added', function(snap) {
@@ -67,11 +79,14 @@ function getUserLists() {
     flash('danger', 'You must be logged in to retrieve Grocery Lists.');
     return false;
   }
-  InventoryManager['lists'] = [];
+  InventoryManager['containers'] = {};
+  InventoryManager['containers']['groceryLists'] = [];
+  InventoryManager['containers']['all'] = [];
+
   var rootRef = InventoryManager['imRef'].child('containers').child(InventoryManager['rootContainer']).child('children');
   rootRef.on('child_added', function(v) {
     var contRef = InventoryManager['imRef'].child('containers').child(v.name());
     recurseContainers(contRef, this);
-  }, InventoryManager['lists']);
+  }, InventoryManager['containers']);
   return true;
 }
