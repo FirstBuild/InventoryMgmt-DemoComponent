@@ -51,17 +51,15 @@ function initAuth(ref, callback) {
           callback();
         }
       });
+
+      // display/hide the DOM elements for when a user is logged in
       $("#unauth-section").hide();
       $("#profile-link").html('<a href="#">' + user.email + '</a>');
       $("ul.masthead-nav").append('<li id="logout"><a href="#">Logout</a></ul>');
       $('#lists').show();
-
-
-      // todo: for now, hard code grocery list until that functionality is complete
-      //displayGroceryList('-JUe8qcgJOZsHYZCogge', true);
     }
     else {
-      // user logged out
+      // user logged out, display/hide the necessary DOM elements
       $('li').remove('#logout');
       $("#unauth-section").show();
       $('#signin-form').show();
@@ -76,7 +74,7 @@ function initAuth(ref, callback) {
 }
 
 
-
+// utility function for display a flash message
 function flash(sev, msg) {
   // see if we know what severity level this should be
   if ($.inArray(sev, ["success", "warning", "danger", "info"]) < 0) {
@@ -91,21 +89,23 @@ function flash(sev, msg) {
   $('#flash').append(html);
 }
 
+// Click handlers for DOM interactions
+// Add Grocery list button handler
 $('#addListButton').click(function(e){
   e.preventDefault();
 
   $('#parentContainerSelectList').html('');
   $('#parentContainerSelectList')
-      .append($("<option></option>")
-      .attr("value",InventoryManager['rootContainer'])
-      .text('Default'));
+    .append($("<option></option>")
+    .attr("value",InventoryManager['rootContainer'])
+    .text('Default'));
 
   $.each(InventoryManager['containers']['all'], function(key,value){
 
     $('#parentContainerSelectList')
-        .append($("<option></option>")
-        .attr("value",value['id'])
-        .text(value['name']));
+      .append($("<option></option>")
+      .attr("value",value['id'])
+      .text(value['name']));
   });
 
   $('#newListForm').toggle();
@@ -120,6 +120,7 @@ $('#addListButton').click(function(e){
 
 })
 
+// Remove Grocery list button handler
 $('#removeListButton').click(function(e){
   e.preventDefault();
 
@@ -128,9 +129,9 @@ $('#removeListButton').click(function(e){
   $.each(InventoryManager['containers']['groceryLists'], function(key,value){
 
     $('#removeContainerSelectList')
-        .append($("<option></option>")
-        .attr("value",value['id'])
-        .text(value['name']));
+      .append($("<option></option>")
+      .attr("value",value['id'])
+      .text(value['name']));
   });
 
   $('#removeListForm').toggle();
@@ -145,7 +146,7 @@ $('#removeListButton').click(function(e){
 
 })
 
-
+// Add Grocery list Submit button handler
 $('#newListAdd').click(function(e){
   e.preventDefault();
 
@@ -162,6 +163,7 @@ $('#newListAdd').click(function(e){
 
 })
 
+// Remove Grocery list Submit button handler
 $('#removeList').click(function(e){
   e.preventDefault();
 
@@ -183,9 +185,9 @@ $('#removeList').click(function(e){
   $.each(InventoryManager['containers']['groceryLists'], function(key,value){
 
     $('#removeContainerSelectList')
-        .append($("<option></option>")
-        .attr("value",value['id'])
-        .text(value['name']));
+      .append($("<option></option>")
+      .attr("value",value['id'])
+      .text(value['name']));
   });
 
 })
@@ -203,6 +205,7 @@ $('#signinSubmit').click(function(e) {
   InventoryManager['auth'].login('password', { email: $('input[type="email"]').val(), password: $('input:password').val() });
 });
 
+// register form submit handler
 $('#registerSubmit').click(function(e) {
   e.preventDefault();
 
@@ -240,6 +243,7 @@ $(document).ready(function() {
   InventoryManager['imRef'] = new Firebase(InventoryManager['appURI']);
   // when authorized, get users grocery list
   InventoryManager['auth'] = initAuth(InventoryManager['imRef'], function() {
+    // we must be authorized first and then we can get the users grocery lists
     getUserLists();
   });
 

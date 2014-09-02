@@ -33,8 +33,8 @@ function deleteList(name) {
 }
 
 // recursively descend through the container tree and identify all grocery lists
-// adding them to the context array (InventoryManger['lists']) and adding listeners
-// for their new children or removed children
+// adding them to the context array (InventoryManger['groceryLists']) and adding listeners
+// for their new children or removed children. Add any found container to context array (InventoryManger['all'])
 function recurseContainers(ref, obj) {
   ref.once('value', function(v) {
     var listObj = {
@@ -89,6 +89,6 @@ function getUserLists() {
     recurseContainers(contRef, this);
   }, InventoryManager['containers']);
   // if we have no grocery lists, flash message
-  
+
   return true;
 }
